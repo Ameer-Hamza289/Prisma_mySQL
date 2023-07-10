@@ -33,6 +33,8 @@ const prisma=new  PrismaClient();
 //add product
 
  const addProduct=async(req,res)=>{
+   ;
+ //console.log(req.body);
     try {
        const product=await prisma.product.create({
             data:{
@@ -43,17 +45,22 @@ const prisma=new  PrismaClient();
         res.status(200).json(product);
         
     } catch (error) {
-        res.status(400).json(error);
+        res.status(400).json({msg:error.message});
     }
 }
 
 
 //update the product
  const updateProduct=async(req,res)=>{
+    // console.log(req.body);
     try {
         const product=await prisma.product.update({
             where:{
                 id:Number(req.params.id)
+            },
+            data:{
+                name:req.body.name,
+                price:req.body.price
             }
         })
         res.status(200).json(product);
@@ -65,12 +72,12 @@ const prisma=new  PrismaClient();
 //delete product
  const deleteProduct=async(req,res)=>{
     try {
-        const product=await prisma.product.delete({
+        const updatedProduct=await prisma.product.delete({
             where:{
                 id:Number(req.params.id)
             }
         })
-        res.status(200).json(product);
+        res.status(200).json(updatedProduct);
     } catch (error) {
         res.status(400).json(error);
     }
